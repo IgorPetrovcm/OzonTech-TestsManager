@@ -8,9 +8,9 @@
 
         public DataTask(int count, IEnumerable<string> lines)
         {
-            lines = lines;
+            this.lines = lines;
 
-            count = count;
+            this.count = count;
         }
     }
 }
