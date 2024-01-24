@@ -2,7 +2,7 @@ namespace OzonTestsManager;
 
 using OzonTestsManager.Entities;
 
-public static class OzonTestTool
+public static class OzonTools
 {
     public static OzonCurrentTest CreateWithTask(string[] lines)
     {
