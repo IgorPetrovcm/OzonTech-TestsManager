@@ -47,6 +47,10 @@ public class OzonCurrentTest
 	}
 
 
+	public void UploadTaskResult(IEnumerable<DataTaskResult> result)
+	{
+		_result = result;
+	}
 	public void UploadTaskResult(string[] lines)
 	{
 		_result = new List<DataTaskResult>() ?? null;
