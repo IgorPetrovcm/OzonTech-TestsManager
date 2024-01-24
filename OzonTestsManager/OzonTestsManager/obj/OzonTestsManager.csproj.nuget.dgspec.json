@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\TestTasksManager.csproj": {}
+    "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\TestTasksManager.csproj": {
+    "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\TestTasksManager.csproj",
-        "projectName": "TestTasksManager",
-        "projectPath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\TestTasksManager.csproj",
+        "projectUniqueName": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
+        "projectName": "OzonTestsManager",
+        "projectPath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
         "packagesPath": "C:\\Users\\igorp\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\obj\\",
         "projectStyle": "PackageReference",

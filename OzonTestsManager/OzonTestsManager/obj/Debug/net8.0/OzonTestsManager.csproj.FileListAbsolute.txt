@@ -1,0 +1,12 @@
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\bin\Debug\net8.0\OzonTestsManager.deps.json
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\bin\Debug\net8.0\OzonTestsManager.dll
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\bin\Debug\net8.0\OzonTestsManager.pdb
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.AssemblyInfoInputs.cache
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.AssemblyInfo.cs
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.csproj.CoreCompileInputs.cache
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.sourcelink.json
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.dll
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\refint\OzonTestsManager.dll
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\OzonTestsManager.pdb
+C:\Users\igorp\Programming\OzonTech-TestsManager\OzonTestsManager\OzonTestsManager\obj\Debug\net8.0\ref\OzonTestsManager.dll
