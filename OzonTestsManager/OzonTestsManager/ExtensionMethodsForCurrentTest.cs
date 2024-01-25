@@ -2,6 +2,7 @@ namespace OzonTestsManager;
 
 using OzonTestsManager.Entities;
 using OzonTestsManager.Structures;
+using OzonTestsManager.Report;
 
 
 public static class ExtensionMethodsForCurrentTest
@@ -29,20 +30,20 @@ public static class ExtensionMethodsForCurrentTest
 
     public static string TestChecking(this OzonCurrentTest test, IList<DataTaskResult> yourResult)
     {
+        TestReport report = new TestReport();
+
         foreach (DataTaskResult item in yourResult)
         {
             DataTaskResult taskResult = test.Result.First(x => x.result.Key == item.result.Key);
-
-            List<UnitErrorReporting> errorReport = new List<UnitErrorReporting>();
 
             if (item.result.Value != taskResult.result.Value)
             {
                 UnitErrorReporting unitReport = OzonTools.CreateUnitErrorRepotring(item.result.Key, taskResult.result.Value, item.result.Value);
 
-                errorReport.Add(unitReport);
+                report.AddError(unitReport);
             }
         }
 
-
+        return report.ToString();
     }
 }

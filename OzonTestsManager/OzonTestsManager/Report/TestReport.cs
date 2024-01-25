@@ -11,13 +11,13 @@ public class TestReport : IReport
 
     public string ReportTitle {get {return _reportTitle; }}
 
-    private IList<UnitErrorReporting> _errors;
+    private IList<UnitErrorReporting>? _errors;
 
     private int _testCount;
 
     public int TestCount {get {return _testCount; }}
 
-    public IList<UnitErrorReporting> Errors {get {return _errors; }}
+    public IList<UnitErrorReporting>? Errors {get {return _errors; }}
 
     public TestReport()
     {
@@ -45,6 +45,9 @@ public class TestReport : IReport
         StringBuilder result = new StringBuilder();
 
         result.Append(_reportTitle);
+
+        if (_errors == null) 
+            return result.ToString();
         
         foreach (UnitErrorReporting error in _errors)
         {

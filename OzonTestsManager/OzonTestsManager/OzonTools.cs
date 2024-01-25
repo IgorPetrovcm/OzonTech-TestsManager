@@ -41,8 +41,4 @@ public static class OzonTools
         };
     }
 
-    public static string BuildReport(IList<UnitErrorReporting> report)
-    {
-        
-    }
 } 
