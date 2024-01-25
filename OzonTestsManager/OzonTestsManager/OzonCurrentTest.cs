@@ -7,7 +7,7 @@ public class OzonCurrentTest
 {
 	private DataTask? _task;
 
-	private IEnumerable<DataTaskResult>? _result;
+	private IList<DataTaskResult>? _result;
 
 	public DataTask? Task {get {return _task;} }
 
@@ -22,7 +22,7 @@ public class OzonCurrentTest
 	{
 		_task = task;
 	}
-	public OzonCurrentTest(IEnumerable<DataTaskResult> result)
+	public OzonCurrentTest(IList<DataTaskResult> result)
 	{
 		_result = result;
 	}
@@ -47,7 +47,7 @@ public class OzonCurrentTest
 	}
 
 
-	public void UploadTaskResult(IEnumerable<DataTaskResult> result)
+	public void UploadTaskResult(IList<DataTaskResult> result)
 	{
 		_result = result;
 	}

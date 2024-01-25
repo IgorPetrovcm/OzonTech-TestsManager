@@ -1,6 +1,7 @@
 namespace OzonTestsManager;
 
 using OzonTestsManager.Entities;
+using OzonTestsManager.Structures;
 
 public static class OzonTools
 {
@@ -29,5 +30,14 @@ public static class OzonTools
         currentTest.UploadTaskResult(result);
 
         return currentTest;
+    }
+
+    public static UnitErrorReporting CreateUnitErrorRepotring(int line, string true_result, string false_result)
+    {
+        return new UnitErrorReporting{
+            line = line,
+            true_result = true_result,
+            false_result = false_result
+        };
     }
 } 

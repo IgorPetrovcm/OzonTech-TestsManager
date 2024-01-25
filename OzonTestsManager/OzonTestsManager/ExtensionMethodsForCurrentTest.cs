@@ -1,6 +1,7 @@
 namespace OzonTestsManager;
 
 using OzonTestsManager.Entities;
+using OzonTestsManager.Structures;
 
 
 public static class ExtensionMethodsForCurrentTest
@@ -24,5 +25,22 @@ public static class ExtensionMethodsForCurrentTest
         }
 
         test.UploadTaskResult(result);
+    }
+
+    public static void TestChecking(this OzonCurrentTest test, IList<DataTaskResult> yourResult)
+    {
+        foreach (DataTaskResult item in yourResult)
+        {
+            DataTaskResult taskResult = test.Result.First(x => x.result.Key == item.result.Key);
+
+            List<UnitErrorReporting> errorReport = new List<UnitErrorReporting>();
+
+            if (item.result.Value != taskResult.result.Value)
+            {
+                UnitErrorReporting unitReport = OzonTools.CreateUnitErrorRepotring(item.result.Key, taskResult.result.Value, item.result.Value);
+
+                errorReport.Add(unitReport);
+            }
+        }
     }
 }
