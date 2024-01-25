@@ -27,7 +27,7 @@ public static class ExtensionMethodsForCurrentTest
         test.UploadTaskResult(result);
     }
 
-    public static void TestChecking(this OzonCurrentTest test, IList<DataTaskResult> yourResult)
+    public static string TestChecking(this OzonCurrentTest test, IList<DataTaskResult> yourResult)
     {
         foreach (DataTaskResult item in yourResult)
         {
@@ -42,5 +42,7 @@ public static class ExtensionMethodsForCurrentTest
                 errorReport.Add(unitReport);
             }
         }
+
+
     }
 }

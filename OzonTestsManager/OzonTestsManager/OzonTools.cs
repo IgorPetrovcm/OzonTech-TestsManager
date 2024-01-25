@@ -40,4 +40,9 @@ public static class OzonTools
             false_result = false_result
         };
     }
+
+    public static string BuildReport(IList<UnitErrorReporting> report)
+    {
+        
+    }
 } 
