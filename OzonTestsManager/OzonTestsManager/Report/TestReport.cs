@@ -7,7 +7,7 @@ using System.Text;
 public class TestReport : IReport
 {
     private string _reportTitle = 
-    "Test Report\n__________________________________________________";
+    "Test Report\n----------------------------------------------------------\n";
 
     public string ReportTitle {get {return _reportTitle; }}
 
@@ -35,6 +35,8 @@ public class TestReport : IReport
 
     public void AddError(UnitErrorReporting error)
     {
+        _errors = _errors ?? new List<UnitErrorReporting>();
+
         error.false_result = error.false_result ?? "Not found";
 
         _errors.Add(error);
@@ -51,7 +53,7 @@ public class TestReport : IReport
         
         foreach (UnitErrorReporting error in _errors)
         {
-            result.Append($"\tline {error.line} - true result: {error.true_result}; your result: {error.false_result}\n");
+            result.Append($"line {error.line} - true result: {error.true_result}; your result: {error.false_result}\n");
         }
 
         return result.ToString();
