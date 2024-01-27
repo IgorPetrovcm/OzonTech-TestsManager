@@ -11,7 +11,7 @@ public static class ExtensionMethodsForCurrentTest
     {
         string[] tasks = new string[lines.Length - 1];
 
-        Array.Copy(lines, 1, tasks, 0, tasks.Length - 1);
+        Array.Copy(lines, 1, tasks, 0, lines.Length - 1);
 
         test.UploadTask(new DataTask(int.Parse(lines[0]), tasks));
     }

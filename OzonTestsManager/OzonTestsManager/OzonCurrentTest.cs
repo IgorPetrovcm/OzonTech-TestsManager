@@ -41,7 +41,7 @@ public class OzonCurrentTest
 	{
 		string[] tasks = new string[lines.Length - 1];
 
-		Array.Copy(lines, 1, tasks, 0, tasks.Length);
+		Array.Copy(lines, 1, tasks, 0, lines.Length);
 
 		_task = new DataTask(int.Parse(lines[0]), tasks);
 	}

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Honor\\Desktop\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj": {}
+    "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Honor\\Desktop\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj": {
+    "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Honor\\Desktop\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
+        "projectUniqueName": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
         "projectName": "OzonTestsManager",
-        "projectPath": "C:\\Users\\Honor\\Desktop\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
-        "packagesPath": "C:\\Users\\Honor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Honor\\Desktop\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\obj\\",
+        "projectPath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
+        "packagesPath": "C:\\Users\\igorp\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Honor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\igorp\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
