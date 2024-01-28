@@ -28,11 +28,11 @@ public static class ExtensionMethodsForCurrentTest
         test.UploadTaskResult(result);
     }
 
-    public static string TestChecking(this OzonCurrentTest test, IList<DataTaskResult> yourResult)
+    public static string TestChecking(this OzonCurrentTest test, YourTaskResult yourResult)
     {
         TestReport report = new TestReport();
 
-        foreach (DataTaskResult item in yourResult)
+        foreach (DataTaskResult item in yourResult.Results)
         {
             DataTaskResult taskResult = test.Result.First(x => x.result.Key == item.result.Key);
 

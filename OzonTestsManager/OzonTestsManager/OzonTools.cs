@@ -1,7 +1,8 @@
 namespace OzonTestsManager;
 
-using OzonTestsManager.Entities;
 using OzonTestsManager.Structures;
+using OzonTestsManager.Entities;
+
 
 public static class OzonTools
 {
