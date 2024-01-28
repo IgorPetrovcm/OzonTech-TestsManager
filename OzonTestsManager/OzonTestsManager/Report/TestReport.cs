@@ -56,6 +56,11 @@ public class TestReport : IReport
             result.Append($"line {error.line} - true result: {error.true_result}; your result: {error.false_result}\n");
         }
 
+        if (_errors.Count == 0)
+        {
+            result.Append("No errors found");
+        }
+
         return result.ToString();
     }
 }
