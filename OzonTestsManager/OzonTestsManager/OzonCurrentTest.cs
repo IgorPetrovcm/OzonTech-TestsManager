@@ -37,7 +37,7 @@ public class OzonCurrentTest
 	{
 		_result = result;
 	}
-	public OzonCurrentTest(DataTask task, List<DataTaskResult> result)
+	public OzonCurrentTest(DataTask task, IList<DataTaskResult> result)
 	{
 		_task = task;
 		_result = result;
