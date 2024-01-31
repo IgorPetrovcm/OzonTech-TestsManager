@@ -43,6 +43,16 @@ public class OzonTasksBuilder
         }
     }
 
+    public void SetResult(string[] lines)
+    {
+        _result = new List<DataTaskResult>();
+        
+        for (int i = 0; i < lines.Length; i++)
+        {
+            _result.Add(new DataTaskResult(i + 1, lines[i]));
+        }
+    }
+
     public OzonCurrentTest Build()
     {
         return new OzonCurrentTest(_task, _result);

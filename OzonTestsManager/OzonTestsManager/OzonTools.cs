@@ -42,4 +42,15 @@ public static class OzonTools
         };
     }
 
+    public static OzonTasksBuilder CreateBuilderWithBasicSettings(TaskSettings taskSettings, string[] task_lines, string[] result_lines)
+    {
+        OzonTasksBuilder builder = new OzonTasksBuilder(); 
+
+        builder.SetTask(taskSettings, task_lines); 
+
+        builder.SetResult(result_lines);
+
+        return builder;
+    }
+
 } 
