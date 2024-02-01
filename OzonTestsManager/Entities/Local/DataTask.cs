@@ -7,6 +7,13 @@ public class DataTask
 
     public IEnumerable<string>? lines;
 
+    public DataTask() {}
+
+    public DataTask(IEnumerable<string> lines)
+    {
+        this.lines = lines;
+    }
+
     public DataTask(int count, IEnumerable<string> lines)
     {
         this.lines = lines;

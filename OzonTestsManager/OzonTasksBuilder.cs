@@ -29,7 +29,7 @@ public class OzonTasksBuilder
 
             Array.Copy(lines, 0, tasks, 0, tasks.Length);
 
-            _task.lines = tasks;
+            _task = new DataTask(tasks);
         }
         else 
         {
@@ -37,9 +37,7 @@ public class OzonTasksBuilder
 
             Array.Copy(lines, 1, tasks, 0, lines.Length - 1);
 
-            _task.lines = tasks;
-
-            _task.count = int.Parse(lines[0]);
+            _task = new DataTask(int.Parse(lines[0]), tasks);
         }
     }
 
@@ -55,7 +53,7 @@ public class OzonTasksBuilder
 
     public OzonCurrentTest Build()
     {
-        return new OzonCurrentTest(_task, _result);
+        return new OzonCurrentTest(_task ?? new DataTask(), _result ?? new List<DataTaskResult>());
     }
 
 }
