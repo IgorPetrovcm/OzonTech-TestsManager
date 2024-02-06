@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ofCtaoPxyLa+Sw+/nhMPaKZyACYf+uHSDIySYB4vHLvme0jsWzNFbB+EgdQUZtswTL6c01Qr8cbN2y2J5ldT+A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\igorp\\.nuget\\packages\\htmlagilitypack\\1.11.58\\htmlagilitypack.1.11.58.nupkg.sha512"
+  ],
+  "logs": []
+}
