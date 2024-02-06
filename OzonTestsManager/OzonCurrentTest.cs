@@ -13,14 +13,14 @@ public class OzonCurrentTest
 
 	public IEnumerable<DataTaskResult>? Result {get {return _result;} }
 
-	public int TaskCount {get {
+	public int TestsCount {get {
 		if (_task == null)
 			return 0;
 		else 
 			return _task.count;
 	}}
 
-	public string[] ArrayTasks {get {
+	public string[] ArrayTests {get {
 		return _task.lines.ToArray();
 	}}
 
