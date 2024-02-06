@@ -15,7 +15,7 @@ public class OzonException
         _exceptionBody = body;
     }
 
-    public override string ToString()
+    public virtual string ReturnException()
     {
         return _exceptionTitle + "\n" + _exceptionBody; 
     }

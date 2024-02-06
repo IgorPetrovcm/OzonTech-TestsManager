@@ -2,6 +2,7 @@ namespace OzonTestsManager;
 
 using System.Net;
 using OzonTestsManager.Exception;
+using System;
 
 
 public enum OzonDeliveryFileMode
@@ -14,7 +15,7 @@ public class OzonAllManager
 
     private readonly string? _sourcePath = "tasksArchive";
 
-    
+    private ExceptionDefaultParams? currentException; 
 
     private bool stateArchive = false;
 
@@ -44,9 +45,14 @@ public class OzonAllManager
         {
             if (!isDirEmpty(_sourcePath))
             {
-                throw new Exception("")
+                string exceptionBody = "You use constructs without setting parameters" +
+                "(by default, the class tries to save tasks in the 'tasksArchive' directory)." + 
+                " The 'tasksArchive' directory must be empty, or you are using a constructor with 'OzonDeliveryFileMode'";
+
+                throw new System.Exception(new ExceptionDefaultParams(exceptionBody).ReturnException());
             }
         }
+        Directory.CreateDirectory(_sourcePath);
     }
 
     public OzonAllManager(string sourcePath)
