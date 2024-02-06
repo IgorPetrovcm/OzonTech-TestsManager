@@ -9,8 +9,8 @@ public interface ITestsDelivery
 
     string UriStringTask {get;} 
 
-    HttpContent GetTestArchive();
-    HttpContent GetTestArchive(Uri uri);
+    KeyValuePair<string,HttpContent> GetTestArchive();
+    KeyValuePair<string,HttpContent> GetTestArchive(Uri uri);
 
-    HttpContent GetTestArchive(string uri);
+    KeyValuePair<string,HttpContent> GetTestArchive(string uri);
 }

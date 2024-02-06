@@ -6,6 +6,8 @@ using OzonTestsManager.Entities;
 
 public static class OzonTools
 {
+
+    //OzonCurrentTest
     public static OzonCurrentTest CreateWithTask(string[] lines)
     {
         string[] tasks = new string[lines.Length - 1];
@@ -33,6 +35,7 @@ public static class OzonTools
         return currentTest;
     }
 
+    // UnitErrorReporting
     public static UnitErrorReporting CreateUnitErrorRepotring(int line, string true_result, string false_result)
     {
         return new UnitErrorReporting{
@@ -42,6 +45,7 @@ public static class OzonTools
         };
     }
 
+    //OzonTasksBuilder
     public static OzonTasksBuilder CreateBuilderWithBasicSettings(TaskSettings taskSettings, string[] task_lines, string[] result_lines)
     {
         OzonTasksBuilder builder = new OzonTasksBuilder(); 
@@ -52,5 +56,8 @@ public static class OzonTools
 
         return builder;
     }
+
+    //OzonAllManager
+
 
 } 

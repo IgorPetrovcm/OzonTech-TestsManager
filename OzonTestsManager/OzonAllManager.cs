@@ -8,19 +8,60 @@ using System;
 public enum OzonDeliveryFileMode
 {
     Update,
+    Add,
+    Recreate
 }
+
+
 public class OzonAllManager
 {
     private OzonTestsDelivery? _delivery;
 
-    private readonly string? _sourcePath = "tasksArchive";
+    private string? _sourcePath = "tasksArchive";
 
     private ExceptionDefaultParams? currentException; 
 
     private bool stateArchive = false;
 
-    private delegate bool IsSourceDirectoryEmply(string path);
-    private IsSourceDirectoryEmply isDirEmpty = (string path) => 
+
+    public OzonAllManager() 
+    {
+        BaseDirectory("You use constructs without setting parameters" +
+                "(by default, the class tries to save tasks in the 'tasksArchive' directory)." + 
+                " The 'tasksArchive' directory must be empty, or you are using a constructor with 'OzonDeliveryFileMode'",
+                _sourcePath);
+    }
+    
+    public OzonAllManager(string sourcePath)
+    {
+        BaseDirectory("You are trying to base an archive with tasks in a folder with other files", sourcePath);
+    }
+
+    public OzonAllManager(OzonDeliveryFileMode mode, Uri uriToTask)
+    {
+        if (mode == OzonDeliveryFileMode.Add)
+        {
+            BaseDirectory("You are using constructs with the 'Add' file mode, and using the default source path. " + 
+                    "The 'tasksArchive' directory should be empty", _sourcePath);
+
+            _delivery = new OzonTestsDelivery(uriToTask);
+
+            HttpContent content = _delivery.GetTestArchive();
+
+            try 
+            {
+                FileStream fs = new FileStream(_sourcePath, FileMode.Create, FileAccess.Write);
+
+                
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+        }
+    }
+
+    private static bool IsDirectoryEmpty(string path) 
     {
         if (Directory.Exists(path))
         {
@@ -36,39 +77,21 @@ public class OzonAllManager
         }   
 
         return true;
-    } ;
+    }
 
-
-    public OzonAllManager() 
+    private void BaseDirectory(string exceptionBody, string sourcePath)
     {
-        if (Directory.Exists(_sourcePath))
+        if (Directory.Exists(sourcePath))
         {
-            if (!isDirEmpty(_sourcePath))
+            if (!IsDirectoryEmpty(sourcePath))
             {
-                string exceptionBody = "You use constructs without setting parameters" +
-                "(by default, the class tries to save tasks in the 'tasksArchive' directory)." + 
-                " The 'tasksArchive' directory must be empty, or you are using a constructor with 'OzonDeliveryFileMode'";
-
-                throw new System.Exception(new ExceptionDefaultParams(exceptionBody).ReturnException());
+                throw new System.Exception(exceptionBody);
             }
+            return;
         }
+
+        _sourcePath = sourcePath;
         Directory.CreateDirectory(_sourcePath);
-    }
-
-    public OzonAllManager(string sourcePath)
-    {
-        if (isDirEmpty(sourcePath))
-        _sourcePath = sourcePath;
-    }
-
-    public OzonAllManager(OzonDeliveryFileMode mode)
-    {
-        if (Directory)
-    }
-
-    public OzonAllManager(string sourcePath)
-    {
-        _sourcePath = sourcePath;
     }
 
     public void AddArchive(Uri uriToTest) 

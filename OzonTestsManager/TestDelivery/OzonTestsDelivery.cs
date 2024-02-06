@@ -25,38 +25,40 @@ public class OzonTestsDelivery : ITestsDelivery
         _uriTask = new Uri(strUriTask);
     }
 
-    public HttpContent GetTestArchive()
+    public KeyValuePair<string,HttpContent> GetTestArchive()
     {
         if (_uriTask is null)
-            return null;
+            return new KeyValuePair<string, HttpContent>(null, null);
 
         string  downloadUri = DeliveryParser.GetHrefToArchiveFile(_uriTask);
 
         HttpResponseMessage response = DeliveryClient.Send(HttpMethod.Get,downloadUri);
 
-        return response.Content;
+        return new KeyValuePair<string, HttpContent>(downloadUri,response.Content);
     }
-    public HttpContent GetTestArchive(Uri uri)
+
+    public KeyValuePair<string,HttpContent> GetTestArchive(Uri uri)
     {
         if (uri is null)
-            return null;
+            return new KeyValuePair<string, HttpContent>(null, null);
 
         string downloadUri = DeliveryParser.GetHrefToArchiveFile(uri);
 
         HttpResponseMessage response = DeliveryClient.Send(HttpMethod.Get, downloadUri);
 
-        return response.Content;
+        return new KeyValuePair<string, HttpContent>(downloadUri, response.Content);
     }
-    public HttpContent GetTestArchive(string uri)
+
+    public KeyValuePair<string,HttpContent> GetTestArchive(string uri)
     {
         if (uri is null)
-            return null;
+            return new KeyValuePair<string, HttpContent>(null, null);
 
         string downloadUri = DeliveryParser.GetHrefToArchiveFile(uri);
 
         HttpResponseMessage response = DeliveryClient.Send(HttpMethod.Get, downloadUri);
 
-        return response.Content;
+        return new KeyValuePair<string, HttpContent>(downloadUri, response.Content);
     }
 
     private static class DeliveryClient
