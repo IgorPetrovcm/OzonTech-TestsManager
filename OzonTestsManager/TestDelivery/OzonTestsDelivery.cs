@@ -4,11 +4,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using HtmlAgilityPack;
 
-public class OzonTestsDelivery
+public class OzonTestsDelivery : ITestsDelivery
 {
     private readonly Uri? _uriTask;
 
     public Uri? UriTask {get {return _uriTask;}}
+
+    public string? UriStringTask {get {return _uriTask?.AbsolutePath;}}
 
 
     public OzonTestsDelivery() {}
@@ -23,7 +25,6 @@ public class OzonTestsDelivery
         _uriTask = new Uri(strUriTask);
     }
 
-
     public HttpContent GetTestArchive()
     {
         if (_uriTask is null)
@@ -33,7 +34,29 @@ public class OzonTestsDelivery
 
         HttpResponseMessage response = DeliveryClient.Send(HttpMethod.Get,downloadUri);
 
-        
+        return response.Content;
+    }
+    public HttpContent GetTestArchive(Uri uri)
+    {
+        if (uri is null)
+            return null;
+
+        string downloadUri = DeliveryParser.GetHrefToArchiveFile(uri);
+
+        HttpResponseMessage response = DeliveryClient.Send(HttpMethod.Get, downloadUri);
+
+        return response.Content;
+    }
+    public HttpContent GetTestArchive(string uri)
+    {
+        if (uri is null)
+            return null;
+
+        string downloadUri = DeliveryParser.GetHrefToArchiveFile(uri);
+
+        HttpResponseMessage response = DeliveryClient.Send(HttpMethod.Get, downloadUri);
+
+        return response.Content;
     }
 
     private static class DeliveryClient
@@ -81,6 +104,15 @@ public class OzonTestsDelivery
 
 
         public static string GetHrefToArchiveFile(Uri uri)
+        {
+            webFromDocument = new HtmlWeb();
+            document = webFromDocument.Load(uri);
+
+            HtmlNode href = document.DocumentNode.SelectSingleNode(xPath);
+
+            return href.Attributes["href"].Value;
+        }
+        public static string GetHrefToArchiveFile(string uri)
         {
             webFromDocument = new HtmlWeb();
             document = webFromDocument.Load(uri);
