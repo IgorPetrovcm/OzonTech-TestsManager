@@ -1,16 +1,8 @@
 namespace OzonTestsManager;
 
-using System.Net;
 using OzonTestsManager.Exception;
 using System;
-
-
-public enum OzonDeliveryFileMode
-{
-    Update,
-    Add,
-    Recreate
-}
+using System.Text.RegularExpressions;
 
 
 public class OzonAllManager
@@ -19,46 +11,48 @@ public class OzonAllManager
 
     private string? _sourcePath = "tasksArchive";
 
-    private ExceptionDefaultParams? currentException; 
-
     private bool stateArchive = false;
 
 
     public OzonAllManager() 
     {
         BaseDirectory("You use constructs without setting parameters" +
-                "(by default, the class tries to save tasks in the 'tasksArchive' directory)." + 
-                " The 'tasksArchive' directory must be empty, or you are using a constructor with 'OzonDeliveryFileMode'",
+                "(by default, the class tries to save tasks in the 'tasksArchive' directory). The directory should be empty",
                 _sourcePath);
     }
     
     public OzonAllManager(string sourcePath)
     {
-        BaseDirectory("You are trying to base an archive with tasks in a folder with other files", sourcePath);
+        BaseDirectory("You are trying to base an archive with tasks in a folder with other files. ", sourcePath);
     }
 
-    public OzonAllManager(OzonDeliveryFileMode mode, Uri uriToTask)
+    public OzonAllManager(Uri uriToTask)
     {
-        if (mode == OzonDeliveryFileMode.Add)
-        {
-            BaseDirectory("You are using constructs with the 'Add' file mode, and using the default source path. " + 
-                    "The 'tasksArchive' directory should be empty", _sourcePath);
+
+            BaseDirectory("You use constructs without setting parameters" +
+                "(by default, the class tries to save tasks in the 'tasksArchive' directory). The directory should be empty",
+                 _sourcePath);
 
             _delivery = new OzonTestsDelivery(uriToTask);
 
-            HttpContent content = _delivery.GetTestArchive();
+            KeyValuePair<string, HttpContent> content = _delivery.GetTestArchive();
 
             try 
             {
-                FileStream fs = new FileStream(_sourcePath, FileMode.Create, FileAccess.Write);
+                FileStream fs = new FileStream(_sourcePath  + Regex.Match(content.Key, @"\d[1,4].zip$"), FileMode.Create, FileAccess.Write);
 
-                
+                content.Value.CopyToAsync(fs);
+
+                fs.Close();
             }
             catch (System.Exception ex)
             {
-                System.Console.WriteLine(ex);
+                throw ex;
             }
-        }
+            finally
+            {
+                stateArchive = true;
+            }
     }
 
     private static bool IsDirectoryEmpty(string path) 
@@ -85,7 +79,7 @@ public class OzonAllManager
         {
             if (!IsDirectoryEmpty(sourcePath))
             {
-                throw new System.Exception(exceptionBody);
+                throw new System.Exception(new ExceptionDefaultParams(exceptionBody).ReturnException());
             }
             return;
         }
@@ -94,17 +88,4 @@ public class OzonAllManager
         Directory.CreateDirectory(_sourcePath);
     }
 
-    public void AddArchive(Uri uriToTest) 
-    {
-        _delivery = new OzonTestsDelivery(uriToTest);
-
-        try
-        {
-            FileStream fileStream = new FileStream(_sourcePath, FileMode.)
-        }
-        catch (Exception ex)
-        {
-            System.Console.WriteLine(ex);
-        }
-    }
 }
