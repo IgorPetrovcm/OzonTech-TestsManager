@@ -5,53 +5,29 @@ using OzonTestsManager.Entities;
 
 public class OzonCurrentTest
 {
-	private DataTask? _task;
+	private int _countTests;
+	private IList<DataTest>? _tests;
 
-	private IList<DataTaskResult>? _result;
+	private IList<DataResult>? _results;
 
-	public DataTask? Task {get {return _task;} }
+	private YourTaskResult _yourResult;
 
-	public IEnumerable<DataTaskResult>? Result {get {return _result;} }
+	public IEnumerable<DataTest>? Task {get {return _tests;} }
+
+	public IEnumerable<DataResult>? Result {get {return _results;} }
 
 	public int TestsCount {get {
-		if (_task == null)
-			return 0;
-		else 
-			return _task.count;
-	}}
-
-	public string[] ArrayTests {get {
-		return _task.lines.ToArray();
+		return _countTests;
 	}}
 
 
 	public OzonCurrentTest()
 	{
-
 	}
-	public OzonCurrentTest(DataTask task)
+	public OzonCurrentTest(IList<DataTest> tests, IList<DataResult> results)
 	{
-		_task = task;
-	}
-	public OzonCurrentTest(IList<DataTaskResult> result)
-	{
-		_result = result;
-	}
-	public OzonCurrentTest(DataTask task, IList<DataTaskResult> result)
-	{
-		_task = task;
-		_result = result;
+		_tests = tests;
+		_results = results;
 	}
 
-
-	public void UploadTask(DataTask task)
-	{
-		_task = task;
-	}
-
-
-	public void UploadTaskResult(IList<DataTaskResult> result)
-	{
-		_result = result;
-	}
 }

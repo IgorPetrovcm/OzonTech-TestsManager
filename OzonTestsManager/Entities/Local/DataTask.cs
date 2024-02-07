@@ -1,23 +1,16 @@
 ﻿namespace OzonTestsManager.Entities;
 
 
-public class DataTask
+public class DataTest
 {
-    public int count;
 
-    public IEnumerable<string>? lines;
+    public string? line;
 
-    public DataTask() {}
+    public DataTest() {}
 
-    public DataTask(IEnumerable<string> lines)
+    public DataTest(string line)
     {
-        this.lines = lines;
+        this.line = line;
     }
 
-    public DataTask(int count, IEnumerable<string> lines)
-    {
-        this.lines = lines;
-
-        this.count = count;
-    }
 }

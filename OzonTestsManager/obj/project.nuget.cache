@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8TZr92RXk9+9EZodSjMhTDAOQiEMbyNx3aJb+0uYAiR7/JpSMW56mJMEpf4wT5y5whx+hTf3g5AptMDzt4LV/A==",
+  "dgSpecHash": "4JF72YvC42Yn9sKRynlSLcw34hHB/dWLUDYZcsFvn1TYyW3vH6kiDYghUX0u3XCSTPtpuJRLEiLgWkgW6cFv6Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\igorp\\Programming\\OzonTech-TestsManager\\OzonTestsManager\\OzonTestsManager.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\igorp\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\igorp\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

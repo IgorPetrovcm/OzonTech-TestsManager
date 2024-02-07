@@ -1,13 +1,13 @@
 ﻿namespace OzonTestsManager.Entities;
 
 
-public class DataTaskResult
+public class DataResult
 {
 	public KeyValuePair<int, string> result;
 
-	public DataTaskResult() {}
+	public DataResult() {}
 
-	public DataTaskResult(int key, string value)
+	public DataResult(int key, string value)
 	{
 		result = new KeyValuePair<int, string>(key,value.ToLower());
 	}
