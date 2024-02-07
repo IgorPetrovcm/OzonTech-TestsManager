@@ -1,6 +1,8 @@
 # OzonTestsManager
 Данная библиотека предоставляет быстрое тестирование для вашего решения задачи с контекста **OzonTech**.
 
+**Ссылка на nuget-пакет: https://www.nuget.org/packages/IgorPetrovcm.OzonTestsManager**
+
 ## Использование 
 + Для работы с **OzonTestsManager** предстоит скачать набор тестов со страницы задачи контекста в виде **.zip** файла.
 
