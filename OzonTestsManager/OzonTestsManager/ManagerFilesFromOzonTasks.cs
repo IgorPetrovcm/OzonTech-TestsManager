@@ -19,8 +19,6 @@ public class ManagerFiles
                     if (currentTask.Result != null && currentTask.Task != null)
                         return true;
                 }
-
-                return false;
             }
             return false;
         }   
@@ -45,11 +43,11 @@ public class ManagerFiles
         _ozonTasks = new Dictionary<string, OzonCurrentTask>();
     }
 
-    public ManagerFiles(string sourcePath)
+    public ManagerFiles(string pathToTestDirectory)
     {
         _ozonTasks = new Dictionary<string, OzonCurrentTask>();
 
-        DirectoryInfo sourceDirectory = new DirectoryInfo(sourcePath);
+        DirectoryInfo sourceDirectory = new DirectoryInfo( pathToTestDirectory );
 
         foreach (FileInfo file in sourceDirectory.GetFiles())
         {
@@ -59,17 +57,32 @@ public class ManagerFiles
 
                 string[] fileLines = File.ReadAllLines(file.FullName);
 
-                if (!_ozonTasks.ContainsKey(match.Groups[1].Value))
+                if (!_ozonTasks.ContainsKey( match.Groups[1].Value) )
                 {
-                    _ozonTasks.Add(match.Groups[1].Value, new OzonCurrentTask());
+                    _ozonTasks.Add( match.Groups[1].Value, new OzonCurrentTask() );
 
-                    UpdateCurrentTask(match.Groups[1].Value, fileLines, match.Groups[2].Success);
+                    UpdateCurrentTask( match.Groups[1].Value, fileLines, match.Groups[2].Success );
                 }
                 else
                 {
-                    UpdateCurrentTask(match.Groups[1].Value, fileLines, match.Groups[2].Success);
+                    UpdateCurrentTask( match.Groups[1].Value, fileLines, match.Groups[2].Success );
                 }
             }
         }
+    }
+
+    public static bool IsFileValid(string trueExtension, string pathToFile)
+    {
+        if (!File.Exists(pathToFile))
+        {
+            return false;
+        }
+
+        if (!pathToFile.EndsWith(trueExtension))
+        {
+            return false;
+        }
+        
+        return true;
     }
 }

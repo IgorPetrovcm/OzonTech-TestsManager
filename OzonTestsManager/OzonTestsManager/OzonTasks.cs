@@ -6,51 +6,70 @@ using System.IO.Compression;
 
 public class OzonTasks
 {
-    private DirectoryInfo? _sourceDirectory;
+    private static string _currentDirectory = Environment.CurrentDirectory;
+    private readonly string _sourcePath;
+    private DirectoryInfo? _testDirectory;
 
     private ManagerFiles _managerFiles;
 
     public string? SourceDirectoryName
     {
-        get { return _sourceDirectory.Name; }
+        get { return _testDirectory.Name; }
     }
 
     public string? SourceDirectoryFullName
     {
-        get { return _sourceDirectory.FullName; }
+        get { return _testDirectory.FullName; }
     }
-
 
 
     public OzonTasks()
     {
+        if (_currentDirectory.Contains("bin"))
+        {
+            _sourcePath = _currentDirectory;
+        }
+        else 
+        {
+            
+        }
+
         AssignDefaultSourceDirectory();
     }
 
     public OzonTasks(string pathToArchive)
     {
-        if (!File.Exists(pathToArchive))
+        if (!ManagerFiles.IsFileValid( ".zip" , pathToArchive ))
         {
-            throw new OzonTasksException("The archive does not exist");
-        }
-        
-        FileInfo archive = new FileInfo(pathToArchive);
-
-        if (!archive.Name.EndsWith(".zip"))
-        {
-            throw new OzonTasksException(@"The archive extension should be "".zip""");
+            throw new OzonTasksException(@"There is no such file, or its extension is not "".zip""");
         }
 
         AssignDefaultSourceDirectory();
 
-        ZipFile.ExtractToDirectory(archive.FullName, _sourceDirectory.FullName);
+        ZipFile.ExtractToDirectory(pathToArchive, _testDirectory.FullName);
     }
 
-    
+    public OzonTasks(string pathToArchive, string pathToTestDirectory)
+    {
+        if (!ManagerFiles.IsFileValid( ".zip", pathToArchive ))
+        {
+            throw new OzonTasksException(@"There is no such file, or its extension is not "".zip""");
+        }
+
+        AssignCurrentDirectoryFromTests(pathToTestDirectory);
+
+        ZipFile.ExtractToDirectory(pathToArchive, pathToTestDirectory);
+    }
 
     private void AssignDefaultSourceDirectory()
     {
         string pathToProjectDirectory = Environment.CurrentDirectory;
+
+        if (pathToProjectDirectory.Contains("bin"))
+        {
+
+        }
+
         DirectoryInfo projectDirectory = new DirectoryInfo(pathToProjectDirectory);
 
         DirectoryInfo[] projectDirectoryChild = projectDirectory.GetDirectories();
@@ -58,14 +77,15 @@ public class OzonTasks
         {
             if (projectDirectoryChild[i].Name == "SourceTasks")
             {
-                _sourceDirectory = projectDirectoryChild[i];
+                _testDirectory = projectDirectoryChild[i];
 
                 return;
             }
         }
         Directory.CreateDirectory(projectDirectory.FullName + "\\SourceTasks");
-        _sourceDirectory = new DirectoryInfo(projectDirectory.FullName + "\\SourceTasks");
+        _testDirectory = new DirectoryInfo(projectDirectory.FullName + "\\SourceTasks");
     }
+
 
     public void AssignCurrentDirectoryWithTests(string path)
     {
@@ -83,13 +103,24 @@ public class OzonTasks
         {
             Directory.CreateDirectory(path);
 
-            _sourceDirectory = new DirectoryInfo(path);
+            _testDirectory = new DirectoryInfo(path);
         }
         else 
         {
             _managerFiles = new ManagerFiles(path);
 
-            _sourceDirectory = new DirectoryInfo(path);
+            _testDirectory = new DirectoryInfo(path);
+        }
+    }
+
+
+    private class StatusManager
+    {
+        private const string sourcePath = "";
+
+        public void ParseFileWithHistoryOfSourcePaths()
+        {
+            
         }
     }
 }
