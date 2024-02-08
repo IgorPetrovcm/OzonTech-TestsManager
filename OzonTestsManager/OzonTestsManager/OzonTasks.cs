@@ -3,14 +3,18 @@ namespace OzonTestsManager;
 using OzonTestsManager.Files;
 using OzonTestsManager.Exception;
 using System.IO.Compression;
+using System.Text.Json;
 
 public class OzonTasks
 {
+    private const string NameDefaultTestDirectory = "Test_Directory";
     private static string _currentDirectory = Environment.CurrentDirectory;
     private readonly string _sourcePath;
-    private DirectoryInfo? _testDirectory;
+    private StatusManager _statusManager = new StatusManager();
 
+    private DirectoryInfo? _testDirectory;
     private ManagerFiles _managerFiles;
+    
 
     public string? SourceDirectoryName
     {
@@ -25,20 +29,15 @@ public class OzonTasks
 
     public OzonTasks()
     {
-        if (_currentDirectory.Contains("bin"))
-        {
-            _sourcePath = _currentDirectory;
-        }
-        else 
-        {
-            
-        }
+        _sourcePath = _statusManager.GetSourceDirectory(_currentDirectory);
 
         AssignDefaultSourceDirectory();
     }
 
     public OzonTasks(string pathToArchive)
     {
+        _sourcePath = _statusManager.GetSourceDirectory(_currentDirectory);
+
         if (!ManagerFiles.IsFileValid( ".zip" , pathToArchive ))
         {
             throw new OzonTasksException(@"There is no such file, or its extension is not "".zip""");
@@ -46,11 +45,16 @@ public class OzonTasks
 
         AssignDefaultSourceDirectory();
 
-        ZipFile.ExtractToDirectory(pathToArchive, _testDirectory.FullName);
+        if (!_statusManager.IsDirectoryInHistory( _testDirectory.FullName, _sourcePath ))
+        {
+            ZipFile.ExtractToDirectory(pathToArchive, _testDirectory.FullName);
+        }
     }
 
     public OzonTasks(string pathToArchive, string pathToTestDirectory)
     {
+        _sourcePath = _statusManager.GetSourceDirectory(_currentDirectory);
+
         if (!ManagerFiles.IsFileValid( ".zip", pathToArchive ))
         {
             throw new OzonTasksException(@"There is no such file, or its extension is not "".zip""");
@@ -63,27 +67,21 @@ public class OzonTasks
 
     private void AssignDefaultSourceDirectory()
     {
-        string pathToProjectDirectory = Environment.CurrentDirectory;
-
-        if (pathToProjectDirectory.Contains("bin"))
-        {
-
-        }
-
-        DirectoryInfo projectDirectory = new DirectoryInfo(pathToProjectDirectory);
+        DirectoryInfo projectDirectory = new DirectoryInfo( _sourcePath );
 
         DirectoryInfo[] projectDirectoryChild = projectDirectory.GetDirectories();
+
         for (int i = 0; i < projectDirectoryChild.Length; i++)
         {
-            if (projectDirectoryChild[i].Name == "SourceTasks")
+            if (projectDirectoryChild[i].Name == NameDefaultTestDirectory)
             {
                 _testDirectory = projectDirectoryChild[i];
 
                 return;
             }
         }
-        Directory.CreateDirectory(projectDirectory.FullName + "\\SourceTasks");
-        _testDirectory = new DirectoryInfo(projectDirectory.FullName + "\\SourceTasks");
+        Directory.CreateDirectory(projectDirectory.FullName + "\\" + NameDefaultTestDirectory);
+        _testDirectory = new DirectoryInfo(projectDirectory.FullName + "\\" + NameDefaultTestDirectory);
     }
 
 
@@ -116,7 +114,34 @@ public class OzonTasks
 
     private class StatusManager
     {
-        private const string sourcePath = "";
+        private const string NameHistoryPaths = "OzonTestsManager_history.json";
+
+        public string GetSourceDirectory(string currentDirectory)
+        {
+            if (currentDirectory.Contains("bin"))
+            {
+                return _currentDirectory;
+            }
+            else 
+            {
+                return _currentDirectory + "\\bin\\Debug\\net" +  Environment.Version.ToString()[0] + ".0\\";
+            }
+        }
+
+        public bool IsDirectoryInHistory(string pathToTestDirectory, string sourcePath)
+        {
+            using (FileStream fs = new FileStream( sourcePath + NameHistoryPaths, FileMode.Open ))
+            {
+                List<string>? paths = JsonSerializer.Deserialize<List<string>>(fs);
+
+                foreach (string path in paths)
+                {
+                    if (path == pathToTestDirectory)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         public void ParseFileWithHistoryOfSourcePaths()
         {
