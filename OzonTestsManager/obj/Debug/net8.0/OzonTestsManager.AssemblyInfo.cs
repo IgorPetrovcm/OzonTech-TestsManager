@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OzonTestsManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c59ddcd7f247dda850a38cd33b29369a10b752bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10744b91746db73896b0841c6d600e60e94b9721")]
 [assembly: System.Reflection.AssemblyProductAttribute("OzonTestsManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OzonTestsManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

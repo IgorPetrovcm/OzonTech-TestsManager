@@ -3,14 +3,14 @@
 using OzonTestsManager.Entities;
 
 
-public class OzonCurrentTest
+public class OzonCurrentTask
 {
 	private int _countTests;
 	private IList<DataTest>? _tests;
 
 	private IList<DataResult>? _results;
 
-	private YourTaskResult _yourResult;
+	private YourTestResult _yourResult;
 
 	public IEnumerable<DataTest>? Task {get {return _tests;} }
 
