@@ -2,11 +2,11 @@ namespace OzonTestsManager;
 
 
 
-public class OzonTests
+public class OzonTasks
 {
     private DirectoryInfo? _sourceDirectory;
 
-    public OzonTests()
+    public OzonTasks()
     {
     }
 
