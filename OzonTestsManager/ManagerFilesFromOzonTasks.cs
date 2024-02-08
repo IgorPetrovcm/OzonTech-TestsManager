@@ -9,6 +9,25 @@ public class ManagerFiles
 
     private Dictionary<string,OzonCurrentTask>? _ozonTasks; 
 
+    public bool IsOneTaskReady { 
+        get 
+        {
+            if (TasksCount > 0)
+            {
+                foreach (OzonCurrentTask currentTask in _ozonTasks.Values)
+                {
+                    if (currentTask.Result != null && currentTask.Task != null)
+                        return true;
+                }
+
+                return false;
+            }
+            return false;
+        }   
+    }
+
+    public int TasksCount {get { return _ozonTasks != null ? _ozonTasks.Count : 0 ; }}
+
     private void UpdateCurrentTask(string key, string[] lines, bool isResult)
     {
         if (isResult)
