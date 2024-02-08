@@ -51,8 +51,6 @@ public class ManagerFiles
 
         DirectoryInfo sourceDirectory = new DirectoryInfo(sourcePath);
 
-        string currentID = "";
-
         foreach (FileInfo file in sourceDirectory.GetFiles())
         {
             if (SearchFilesRegex.IsMatch(file.Name))

@@ -8,6 +8,18 @@ public class OzonTasks
 
     private ManagerFiles _managerFiles;
 
+    public string? SourceDirectoryName
+    {
+        get { return _sourceDirectory.Name; }
+    }
+
+    public string? SourceDirectoryFullName
+    {
+        get { return _sourceDirectory.FullName; }
+    }
+
+    
+
     public OzonTasks()
     {
         string pathToProjectDirectory = Environment.CurrentDirectory;
@@ -34,6 +46,22 @@ public class OzonTasks
         if (!_managerFiles.IsOneTaskReady)
         {
             throw new Exception("You are trying to assign a current directory with tests that does not have them");
+        }
+    }
+
+    public void AssignCurrentDirectoryFromTests(string path)
+    {
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+
+            _sourceDirectory = new DirectoryInfo(path);
+        }
+        else 
+        {
+            _managerFiles = new ManagerFiles(path);
+
+            _sourceDirectory = new DirectoryInfo(path);
         }
     }
 }

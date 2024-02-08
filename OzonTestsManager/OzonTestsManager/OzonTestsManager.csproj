@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>IgorPetrovcm.OzonTestsManager</PackageId>
+    <Title>OzonTestsManager</Title>
+    <Version>1.1.0</Version>
+    <Authors>IgorPetrovcm</Authors>
+    <Company>IgorPetrovcm</Company>
+    <Product>IgorPetrovcm</Product>
+    <Description>Данная библиотека обеспечивает быстрое решение ваших задач в контексте OzonTech </Description>
+  </PropertyGroup>
+
+</Project>
