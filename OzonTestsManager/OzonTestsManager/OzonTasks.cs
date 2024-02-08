@@ -1,6 +1,8 @@
 namespace OzonTestsManager;
 
 using OzonTestsManager.Files;
+using OzonTestsManager.Exception;
+using System.IO.Compression;
 
 public class OzonTasks
 {
@@ -18,9 +20,35 @@ public class OzonTasks
         get { return _sourceDirectory.FullName; }
     }
 
-    
+
 
     public OzonTasks()
+    {
+        AssignDefaultSourceDirectory();
+    }
+
+    public OzonTasks(string pathToArchive)
+    {
+        if (!File.Exists(pathToArchive))
+        {
+            throw new OzonTasksException("The archive does not exist");
+        }
+        
+        FileInfo archive = new FileInfo(pathToArchive);
+
+        if (!archive.Name.EndsWith(".zip"))
+        {
+            throw new OzonTasksException(@"The archive extension should be "".zip""");
+        }
+
+        AssignDefaultSourceDirectory();
+
+        ZipFile.ExtractToDirectory(archive.FullName, _sourceDirectory.FullName);
+    }
+
+    
+
+    private void AssignDefaultSourceDirectory()
     {
         string pathToProjectDirectory = Environment.CurrentDirectory;
         DirectoryInfo projectDirectory = new DirectoryInfo(pathToProjectDirectory);
@@ -45,7 +73,7 @@ public class OzonTasks
 
         if (!_managerFiles.IsOneTaskReady)
         {
-            throw new Exception("You are trying to assign a current directory with tests that does not have them");
+            throw new OzonTasksException("You are trying to assign a current directory with tests that does not have them");
         }
     }
 
