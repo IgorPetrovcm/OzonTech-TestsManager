@@ -28,10 +28,7 @@ public class OzonTasks : IDisposable
 
     public OzonTasks()
     {
-        if (AssignDefaultDirectoryForTasks())
-        {
-            _statusProject.AddPath( _testDirectory.FullName );
-        }
+        AssignDefaultDirectoryForTasks();
     }
 
     public OzonTasks(string pathToArchive)
@@ -40,8 +37,6 @@ public class OzonTasks : IDisposable
         {
             if (_statusProject.IsDirectoryInHistory( _testDirectory.FullName ))
                 return;
-            else 
-                _statusProject.AddPath( _testDirectory.FullName );
         }
 
         if (!ManagerFiles.IsFileValid( ".zip" , pathToArchive ))
@@ -50,6 +45,8 @@ public class OzonTasks : IDisposable
         }
 
         ZipFile.ExtractToDirectory( pathToArchive, _testDirectory.FullName );
+
+        _statusProject.AddPath(_testDirectory.FullName);
     }
 
     public OzonTasks(string pathToArchive, string pathToTestDirectory)
@@ -58,8 +55,6 @@ public class OzonTasks : IDisposable
         {
             if (_statusProject.IsDirectoryInHistory( pathToTestDirectory ))
                 return;
-            else 
-                _statusProject.AddPath( _testDirectory.FullName );
         }
 
         if (!ManagerFiles.IsFileValid( ".zip", pathToArchive ))
@@ -68,6 +63,8 @@ public class OzonTasks : IDisposable
         }
 
         ZipFile.ExtractToDirectory(pathToArchive, pathToTestDirectory);
+
+        _statusProject.AddPath( _testDirectory.FullName );
     }
 
     private bool AssignDefaultDirectoryForTasks()
