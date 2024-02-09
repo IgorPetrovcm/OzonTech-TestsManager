@@ -181,6 +181,8 @@ public class OzonTasks : IDisposable
 
                 listHistory.Add(pathToTestDirectory);
 
+                fs.SetLength(0);
+
                 JsonSerializer.Serialize <List<string>> (fs, listHistory);
 
                 fs.Close();
