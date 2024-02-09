@@ -5,12 +5,12 @@ using OzonTestsManager.Exception;
 using System.IO.Compression;
 using System.Text.Json;
 
-public class OzonTasks
+public class OzonTasks : IDisposable
 {
     private const string NameDefaultTestDirectory = "Test_Directory";
-    private static string _currentDirectory = Environment.CurrentDirectory;
+    private static string CurrentPathEnvironment = Environment.CurrentDirectory;
     private readonly string _sourcePath;
-    private StatusManager _statusManager = new StatusManager();
+    private StatusProject _statusProject = new StatusProject();
 
     private DirectoryInfo? _testDirectory;
     private ManagerFiles _managerFiles;
@@ -29,43 +29,55 @@ public class OzonTasks
 
     public OzonTasks()
     {
-        _sourcePath = _statusManager.GetSourceDirectory(_currentDirectory);
+        _sourcePath = _statusProject.GetSourceDirectory( CurrentPathEnvironment );
 
-        AssignDefaultSourceDirectory();
+        if (AssignDefaultDirectoryForTasks())
+        {
+            _statusProject.AddPath( _testDirectory.FullName, _sourcePath );
+        }
     }
 
     public OzonTasks(string pathToArchive)
     {
-        _sourcePath = _statusManager.GetSourceDirectory(_currentDirectory);
+        _sourcePath = _statusProject.GetSourceDirectory( CurrentPathEnvironment );
+
+        if (!AssignDefaultDirectoryForTasks())
+        {
+            if (_statusProject.IsDirectoryInHistory( _testDirectory.FullName, _sourcePath ))
+                return;
+            else 
+                _statusProject.AddPath( _testDirectory.FullName, _sourcePath );
+        }
 
         if (!ManagerFiles.IsFileValid( ".zip" , pathToArchive ))
         {
             throw new OzonTasksException(@"There is no such file, or its extension is not "".zip""");
         }
 
-        AssignDefaultSourceDirectory();
-
-        if (!_statusManager.IsDirectoryInHistory( _testDirectory.FullName, _sourcePath ))
-        {
-            ZipFile.ExtractToDirectory(pathToArchive, _testDirectory.FullName);
-        }
+        ZipFile.ExtractToDirectory( pathToArchive, _testDirectory.FullName );
     }
 
     public OzonTasks(string pathToArchive, string pathToTestDirectory)
     {
-        _sourcePath = _statusManager.GetSourceDirectory(_currentDirectory);
+        _sourcePath = _statusProject.GetSourceDirectory( CurrentPathEnvironment ); 
+
+        if (!AssignCurrentDirectoryForTasks( pathToTestDirectory ))
+        {
+            if (_statusProject.IsDirectoryInHistory( pathToTestDirectory, _sourcePath ))
+                return;
+            else 
+                _statusProject.AddPath( _testDirectory.FullName, _sourcePath );
+        }
 
         if (!ManagerFiles.IsFileValid( ".zip", pathToArchive ))
         {
             throw new OzonTasksException(@"There is no such file, or its extension is not "".zip""");
         }
 
-        AssignCurrentDirectoryFromTests(pathToTestDirectory);
-
         ZipFile.ExtractToDirectory(pathToArchive, pathToTestDirectory);
     }
 
-    private void AssignDefaultSourceDirectory()
+    private bool AssignDefaultDirectoryForTasks()
     {
         DirectoryInfo projectDirectory = new DirectoryInfo( _sourcePath );
 
@@ -77,60 +89,93 @@ public class OzonTasks
             {
                 _testDirectory = projectDirectoryChild[i];
 
-                return;
+                return false;
             }
         }
         Directory.CreateDirectory(projectDirectory.FullName + "\\" + NameDefaultTestDirectory);
         _testDirectory = new DirectoryInfo(projectDirectory.FullName + "\\" + NameDefaultTestDirectory);
+
+        return true;
     }
 
 
-    public void AssignCurrentDirectoryWithTests(string path)
-    {
-        _managerFiles = new ManagerFiles(path);
+    // public void AssignCurrentDirectoryWithTests(string path)
+    // {
+    //     _managerFiles = new ManagerFiles(path);
 
-        if (!_managerFiles.IsOneTaskReady)
-        {
-            throw new OzonTasksException("You are trying to assign a current directory with tests that does not have them");
-        }
-    }
+    //     if (!_managerFiles.IsOneTaskReady)
+    //     {
+    //         throw new OzonTasksException("You are trying to assign a current directory with tests that does not have them");
+    //     }
+    // }
 
-    public void AssignCurrentDirectoryFromTests(string path)
+    public bool AssignCurrentDirectoryForTasks(string path)
     {
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
 
             _testDirectory = new DirectoryInfo(path);
+
+            return true;
         }
         else 
         {
             _managerFiles = new ManagerFiles(path);
 
             _testDirectory = new DirectoryInfo(path);
+
+            return false;
         }
     }
 
-
-    private class StatusManager
+    public void Dispose()
     {
-        private const string NameHistoryPaths = "OzonTestsManager_history.json";
+        GC.SuppressFinalize(this);
+    }
+    
+    ~OzonTasks()
+    {
 
-        public string GetSourceDirectory(string currentDirectory)
+    }
+
+    private class StatusProject
+    {
+        private const string NameHistoryPaths = "OzonTestsManager_history_status.json";
+
+        private readonly string? _sourcePath;
+
+        public StatusProject(string pathEnvironment)
         {
-            if (currentDirectory.Contains("bin"))
+            if (pathEnvironment.Contains("bin"))
             {
-                return _currentDirectory;
+                DirectoryInfo sourcePath = new DirectoryInfo(pathEnvironment + "..\\..\\..\\");
+
+                _sourcePath = sourcePath.FullName;
             }
             else 
             {
-                return _currentDirectory + "\\bin\\Debug\\net" +  Environment.Version.ToString()[0] + ".0\\";
+                _sourcePath = pathEnvironment + "\\bin\\";
             }
         }
 
-        public bool IsDirectoryInHistory(string pathToTestDirectory, string sourcePath)
+        // public string GetSourceDirectory(string currentDirectory)
+        // {
+        //     if (currentDirectory.Contains("bin"))
+        //     {
+        //         DirectoryInfo newTestDirectory = new DirectoryInfo(currentDirectory + "..\\..\\..\\");
+
+        //         return newTestDirectory.FullName;
+        //     }
+        //     else 
+        //     {
+        //         return currentDirectory + "\\bin\\";
+        //     }
+        // }
+
+        public bool IsDirectoryInHistory(string pathToTestDirectory)
         {
-            using (FileStream fs = new FileStream( sourcePath + NameHistoryPaths, FileMode.Open ))
+            using (FileStream fs = new FileStream( _sourcePath + NameHistoryPaths, FileMode.Open ))
             {
                 List<string>? paths = JsonSerializer.Deserialize<List<string>>(fs);
 
@@ -139,8 +184,38 @@ public class OzonTasks
                     if (path == pathToTestDirectory)
                         return true;
                 }
+
+                fs.Close();
             }
             return false;
+        }
+
+        public void AddPath(string sourcePath,string pathToTestDirectory)
+        {
+            if (!File.Exists(sourcePath + NameDefaultTestDirectory))
+            {
+                using (FileStream fs = new FileStream( sourcePath + NameHistoryPaths, FileMode.Create))
+                {
+                    List<string> patternFromJsonList = new List<string>();
+
+                    JsonSerializer.Serialize <List<string>> (fs, patternFromJsonList);
+
+                    fs.Close();
+                }
+            }
+            using (FileStream fs = new FileStream( sourcePath + NameHistoryPaths, FileMode.Open, FileAccess.ReadWrite))
+            {
+                List<string>? listHistory = JsonSerializer.Deserialize <List<string>> (fs);
+
+                if (listHistory.Contains(pathToTestDirectory))
+                    return;
+
+                listHistory.Add(pathToTestDirectory);
+
+                JsonSerializer.Serialize <List<string>> (fs, listHistory);
+
+                fs.Close();
+            }
         }
 
         public void ParseFileWithHistoryOfSourcePaths()
