@@ -9,8 +9,7 @@ public class OzonTasks : IDisposable
 {
     private const string NameDefaultTestDirectory = "Test_Directory";
     private static string CurrentPathEnvironment = Environment.CurrentDirectory;
-    private readonly string _sourcePath;
-    private StatusProject _statusProject = new StatusProject();
+    private StatusProject _statusProject = new StatusProject( CurrentPathEnvironment, NameDefaultTestDirectory );
 
     private DirectoryInfo? _testDirectory;
     private ManagerFiles _managerFiles;
@@ -29,24 +28,20 @@ public class OzonTasks : IDisposable
 
     public OzonTasks()
     {
-        _sourcePath = _statusProject.GetSourceDirectory( CurrentPathEnvironment );
-
         if (AssignDefaultDirectoryForTasks())
         {
-            _statusProject.AddPath( _testDirectory.FullName, _sourcePath );
+            _statusProject.AddPath( _testDirectory.FullName );
         }
     }
 
     public OzonTasks(string pathToArchive)
     {
-        _sourcePath = _statusProject.GetSourceDirectory( CurrentPathEnvironment );
-
         if (!AssignDefaultDirectoryForTasks())
         {
-            if (_statusProject.IsDirectoryInHistory( _testDirectory.FullName, _sourcePath ))
+            if (_statusProject.IsDirectoryInHistory( _testDirectory.FullName ))
                 return;
             else 
-                _statusProject.AddPath( _testDirectory.FullName, _sourcePath );
+                _statusProject.AddPath( _testDirectory.FullName );
         }
 
         if (!ManagerFiles.IsFileValid( ".zip" , pathToArchive ))
@@ -59,14 +54,12 @@ public class OzonTasks : IDisposable
 
     public OzonTasks(string pathToArchive, string pathToTestDirectory)
     {
-        _sourcePath = _statusProject.GetSourceDirectory( CurrentPathEnvironment ); 
-
         if (!AssignCurrentDirectoryForTasks( pathToTestDirectory ))
         {
-            if (_statusProject.IsDirectoryInHistory( pathToTestDirectory, _sourcePath ))
+            if (_statusProject.IsDirectoryInHistory( pathToTestDirectory ))
                 return;
             else 
-                _statusProject.AddPath( _testDirectory.FullName, _sourcePath );
+                _statusProject.AddPath( _testDirectory.FullName );
         }
 
         if (!ManagerFiles.IsFileValid( ".zip", pathToArchive ))
@@ -79,7 +72,7 @@ public class OzonTasks : IDisposable
 
     private bool AssignDefaultDirectoryForTasks()
     {
-        DirectoryInfo projectDirectory = new DirectoryInfo( _sourcePath );
+        DirectoryInfo projectDirectory = new DirectoryInfo( _statusProject.SourcePath );
 
         DirectoryInfo[] projectDirectoryChild = projectDirectory.GetDirectories();
 
@@ -97,17 +90,6 @@ public class OzonTasks : IDisposable
 
         return true;
     }
-
-
-    // public void AssignCurrentDirectoryWithTests(string path)
-    // {
-    //     _managerFiles = new ManagerFiles(path);
-
-    //     if (!_managerFiles.IsOneTaskReady)
-    //     {
-    //         throw new OzonTasksException("You are trying to assign a current directory with tests that does not have them");
-    //     }
-    // }
 
     public bool AssignCurrentDirectoryForTasks(string path)
     {
@@ -145,7 +127,9 @@ public class OzonTasks : IDisposable
 
         private readonly string? _sourcePath;
 
-        public StatusProject(string pathEnvironment)
+        public string? SourcePath { get {return _sourcePath; }}
+
+        public StatusProject(string pathEnvironment, string testDirectoryName)
         {
             if (pathEnvironment.Contains("bin"))
             {
@@ -157,21 +141,20 @@ public class OzonTasks : IDisposable
             {
                 _sourcePath = pathEnvironment + "\\bin\\";
             }
+
+            if (!File.Exists(_sourcePath + NameHistoryPaths))
+            {
+                FileStream fs = new FileStream(_sourcePath + NameHistoryPaths, FileMode.Create);
+                List<string> testDirectoriPathList = new List<string>() 
+                {
+                    _sourcePath + testDirectoryName
+                };
+
+                JsonSerializer.Serialize <List<string>> (fs, testDirectoriPathList);
+
+                fs.Close();
+            }
         }
-
-        // public string GetSourceDirectory(string currentDirectory)
-        // {
-        //     if (currentDirectory.Contains("bin"))
-        //     {
-        //         DirectoryInfo newTestDirectory = new DirectoryInfo(currentDirectory + "..\\..\\..\\");
-
-        //         return newTestDirectory.FullName;
-        //     }
-        //     else 
-        //     {
-        //         return currentDirectory + "\\bin\\";
-        //     }
-        // }
 
         public bool IsDirectoryInHistory(string pathToTestDirectory)
         {
@@ -190,20 +173,9 @@ public class OzonTasks : IDisposable
             return false;
         }
 
-        public void AddPath(string sourcePath,string pathToTestDirectory)
+        public void AddPath(string pathToTestDirectory)
         {
-            if (!File.Exists(sourcePath + NameDefaultTestDirectory))
-            {
-                using (FileStream fs = new FileStream( sourcePath + NameHistoryPaths, FileMode.Create))
-                {
-                    List<string> patternFromJsonList = new List<string>();
-
-                    JsonSerializer.Serialize <List<string>> (fs, patternFromJsonList);
-
-                    fs.Close();
-                }
-            }
-            using (FileStream fs = new FileStream( sourcePath + NameHistoryPaths, FileMode.Open, FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream( _sourcePath + NameHistoryPaths, FileMode.Open, FileAccess.ReadWrite ))
             {
                 List<string>? listHistory = JsonSerializer.Deserialize <List<string>> (fs);
 
