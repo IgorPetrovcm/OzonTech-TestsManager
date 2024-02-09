@@ -4,6 +4,8 @@ using OzonTestsManager.Files;
 using OzonTestsManager.Exception;
 using System.IO.Compression;
 using System.Text.Json;
+using OzonTestsManager.Entities;
+using OzonTestsManager.Report;
 
 public class OzonTasks : IDisposable
 {
@@ -26,17 +28,16 @@ public class OzonTasks : IDisposable
     }
 
 
-    public OzonTasks()
-    {
-        AssignDefaultDirectoryForTasks();
-    }
-
     public OzonTasks(string pathToArchive)
     {
         if (!AssignDefaultDirectoryForTasks())
         {
             if (_statusProject.IsDirectoryInHistory( _testDirectory.FullName ))
+            {
+                _managerFiles = new ManagerFiles( _testDirectory.FullName );
+
                 return;
+            }
         }
 
         if (!ManagerFiles.IsFileValid( ".zip" , pathToArchive ))
@@ -47,6 +48,8 @@ public class OzonTasks : IDisposable
         ZipFile.ExtractToDirectory( pathToArchive, _testDirectory.FullName );
 
         _statusProject.AddPath(_testDirectory.FullName);
+
+        _managerFiles = new ManagerFiles( _testDirectory.FullName ); 
     }
 
     public OzonTasks(string pathToArchive, string pathToTestDirectory)
@@ -54,7 +57,11 @@ public class OzonTasks : IDisposable
         if (!AssignCurrentDirectoryForTasks( pathToTestDirectory ))
         {
             if (_statusProject.IsDirectoryInHistory( pathToTestDirectory ))
+            {
+                _managerFiles = new ManagerFiles( _testDirectory.FullName );
+
                 return;
+            }
         }
 
         if (!ManagerFiles.IsFileValid( ".zip", pathToArchive ))
@@ -65,6 +72,8 @@ public class OzonTasks : IDisposable
         ZipFile.ExtractToDirectory(pathToArchive, pathToTestDirectory);
 
         _statusProject.AddPath( _testDirectory.FullName );
+
+        _managerFiles = new ManagerFiles(_testDirectory.FullName);
     }
 
     private bool AssignDefaultDirectoryForTasks()
@@ -100,16 +109,42 @@ public class OzonTasks : IDisposable
         }
         else 
         {
-            _managerFiles = new ManagerFiles(path);
-
             _testDirectory = new DirectoryInfo(path);
 
             return false;
         }
     }
 
+    public IEnumerable<OzonCurrentTask> GetTasks()
+    {
+        OzonCurrentTask[] tasks = _managerFiles.ReadyTasks;
+
+        for (int i =  0; i < tasks.Length; i++)
+        {
+            yield return tasks[i];
+        }
+    }
+
     public void Dispose()
     {
+        OzonCurrentTask[] tasks = _managerFiles.ReadyTasks;
+
+        List<TaskReport> reports = new List<TaskReport>();
+
+        for (int i = 0; i < tasks.Length; i++)
+        {
+            OzonCurrentTask task = tasks[i];
+
+            
+
+            foreach (DataResult resultTest in task.yourResult.Results)
+            {
+                DataResult result = task.Results.First(x => x.result.Key == resultTest.result.Key);
+
+
+            }
+        }
+
         GC.SuppressFinalize(this);
     }
     

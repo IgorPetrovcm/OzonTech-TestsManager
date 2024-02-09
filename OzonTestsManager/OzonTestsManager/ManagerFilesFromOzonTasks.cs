@@ -7,7 +7,9 @@ public class ManagerFiles
 {
     private readonly Regex SearchFilesRegex = new Regex(@"^(\d+)(\.\w)?");
 
-    private Dictionary<string,OzonCurrentTask>? _ozonTasks; 
+    private Dictionary<string, OzonCurrentTask>? _ozonTasks; 
+
+    public Dictionary<string, OzonCurrentTask>? OzonTasks { get { return _ozonTasks; }}
 
     public bool IsOneTaskReady { 
         get 
@@ -16,12 +18,18 @@ public class ManagerFiles
             {
                 foreach (OzonCurrentTask currentTask in _ozonTasks.Values)
                 {
-                    if (currentTask.Result != null && currentTask.Task != null)
+                    if (currentTask.Results != null && currentTask.Tests != null)
                         return true;
                 }
             }
             return false;
         }   
+    }
+
+    public OzonCurrentTask[] ReadyTasks {
+        get {
+            return _ozonTasks.Where(x => x.Value.Results != null && x.Value.Tests != null).Select(x => x.Value).ToArray();
+        }
     }
 
     public int TasksCount {get { return _ozonTasks != null ? _ozonTasks.Count : 0 ; }}
@@ -59,7 +67,7 @@ public class ManagerFiles
 
                 if (!_ozonTasks.ContainsKey( match.Groups[1].Value) )
                 {
-                    _ozonTasks.Add( match.Groups[1].Value, new OzonCurrentTask() );
+                    _ozonTasks.Add( match.Groups[1].Value, new OzonCurrentTask(match.Groups[1].Value) );
 
                     UpdateCurrentTask( match.Groups[1].Value, fileLines, match.Groups[2].Success );
                 }

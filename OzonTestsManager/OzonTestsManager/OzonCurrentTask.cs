@@ -5,16 +5,19 @@ using OzonTestsManager.Entities;
 
 public class OzonCurrentTask
 {
+	private string? _name;
 	private int _countTests;
 	private IList<DataTest>? _tests;
 
 	private IList<DataResult>? _results;
 
-	private YourTestResult _yourResult;
+	public YourTestResult yourResult = new YourTestResult();
 
-	public IEnumerable<DataTest>? Task {get {return _tests;} }
+	public string? Name {get { return _name; }}
 
-	public IEnumerable<DataResult>? Result {get {return _results;} }
+	public IEnumerable<DataTest>? Tests {get {return _tests;} }
+
+	public IEnumerable<DataResult>? Results {get {return _results;} }
 
 	public int TestsCount {get {
 		return _countTests;
@@ -24,11 +27,22 @@ public class OzonCurrentTask
 	public OzonCurrentTask()
 	{
 	}
+	public OzonCurrentTask(string name)
+	{
+		_name = name;
+	}
 	public OzonCurrentTask(IList<DataTest> tests, IList<DataResult> results)
 	{
 		_tests = tests;
 		_results = results;
 	}
+	public OzonCurrentTask(IList<DataTest> tests, IList<DataResult> results, string name)
+	{
+		_tests = tests;
+		_results = results;
+		_name = name;
+	}
+
 
 	public void UploadResults(string[] lines)
 	{
@@ -50,4 +64,13 @@ public class OzonCurrentTask
 		}
 	}
 
+	public IEnumerator<string> GetEnumerator()
+	{
+		DataTest[] tests = _tests.ToArray();
+
+		for (int i = 0; i < tests.Length; i++)
+		{
+			yield return tests[i].line;
+		}
+	}
 }

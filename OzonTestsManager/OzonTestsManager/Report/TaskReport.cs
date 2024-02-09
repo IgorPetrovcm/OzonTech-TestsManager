@@ -4,30 +4,30 @@ using OzonTestsManager.Structures;
 using System.Text;
 
 
-public class TestReport : IReport
+public class TaskReport 
 {
-    private string _reportTitle = 
-    "Test Report\n----------------------------------------------------------\n";
-
-    public string ReportTitle {get {return _reportTitle; }}
+    private string? _nameTask; 
 
     private IList<UnitErrorReporting>? _errors;
 
     private int _testCount;
 
+    private const string ReportTitle = 
+    $"Test Report\n-------------------------------------------------------------------------------------------------------\n";
+
     public int TestCount {get {return _testCount; }}
 
     public IList<UnitErrorReporting>? Errors {get {return _errors; }}
 
-    public TestReport()
+    public TaskReport(string nameTask)
     {
-
+        _nameTask = nameTask;
     }
-    public TestReport(int testCount)
+    public TaskReport(int testCount)
     {
         _testCount = testCount;
     }
-    public TestReport(int testCount, IList<UnitErrorReporting> errors)
+    public TaskReport(int testCount, IList<UnitErrorReporting> errors)
     {
         _testCount = testCount;
         _errors = errors;
@@ -46,7 +46,9 @@ public class TestReport : IReport
     {
         StringBuilder result = new StringBuilder();
 
-        result.Append(_reportTitle);
+        result.Append("Task: " + _nameTask);
+
+        result.Append(ReportTitle);
 
         if (_errors == null) 
             return result.ToString();
@@ -58,7 +60,7 @@ public class TestReport : IReport
 
         if (_errors.Count == 0)
         {
-            result.Append("No errors found");
+            result.Append("Complete correct");
         }
 
         return result.ToString();
