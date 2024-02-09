@@ -140,7 +140,7 @@ public class OzonTasks : IDisposable
             {
                 DataResult result = task.Results.First(x => x.result.Key == yourTest.result.Key);
 
-                if (result.result.Value != yourTest.result.Value)
+                if (result.result.Value.ToString() != yourTest.result.Value.ToString())
                 {
                     UnitErrorReporting error = new UnitErrorReporting();
 

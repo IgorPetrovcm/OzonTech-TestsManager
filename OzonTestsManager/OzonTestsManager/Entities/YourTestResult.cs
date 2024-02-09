@@ -22,6 +22,8 @@ public class YourTestResult
 
     public void Add(string result)
     {
+        result = result.Trim();
+
         _results.Add(new DataResult(_currentKey, result));
 
         _currentKey++;
@@ -30,7 +32,7 @@ public class YourTestResult
     public void Add<T>(IEnumerable<T> result)
     {
         _results.Add( new DataResult(_currentKey, 
-                                            string.Join( _separator, result.Select(x => x.ToString()).ToArray() )) );
+                                            string.Join( _separator, result.Select(x => x.ToString().Trim()).ToArray() )) );
         
         _currentKey++;
 

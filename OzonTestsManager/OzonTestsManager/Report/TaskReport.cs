@@ -55,7 +55,7 @@ public class TaskReport
         
         foreach (UnitErrorReporting error in _errors)
         {
-            result.Append($"line {error.line} - true result: {error.true_result}; your result: {error.false_result}\n");
+            result.Append($@"line {error.line} - true result: ""{error.true_result}""; your result: ""{error.false_result}""\n");
         }
 
         if (_errors.Count == 0)

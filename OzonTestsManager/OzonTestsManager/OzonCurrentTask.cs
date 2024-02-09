@@ -11,7 +11,7 @@ public class OzonCurrentTask
 
 	private IList<DataResult>? _results;
 
-	public YourTestResult yourResult = new YourTestResult();
+	public YourTestResult yourResult;
 
 	public string? Name {get { return _name; }}
 
@@ -30,6 +30,7 @@ public class OzonCurrentTask
 	public OzonCurrentTask(string name)
 	{
 		_name = name;
+		yourResult = new YourTestResult();
 	}
 	public OzonCurrentTask(IList<DataTest> tests, IList<DataResult> results)
 	{
@@ -50,6 +51,8 @@ public class OzonCurrentTask
 
 		for (int i = 0; i < lines.Length; i++)
 		{
+			lines[i] = lines[i].Trim();
+			
 			_results.Add(new DataResult(i + 1, lines[i]));
 		}
 	}
