@@ -46,7 +46,7 @@ public class TaskReport
     {
         StringBuilder result = new StringBuilder();
 
-        result.Append("Task: " + _nameTask);
+        result.Append("Task: " + _nameTask + "\n");
 
         result.Append(ReportTitle);
 

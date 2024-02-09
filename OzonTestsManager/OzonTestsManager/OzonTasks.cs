@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Text.Json;
 using OzonTestsManager.Entities;
 using OzonTestsManager.Report;
+using OzonTestsManager.Structures;
 
 public class OzonTasks : IDisposable
 {
@@ -129,20 +130,29 @@ public class OzonTasks : IDisposable
     {
         OzonCurrentTask[] tasks = _managerFiles.ReadyTasks;
 
-        List<TaskReport> reports = new List<TaskReport>();
-
         for (int i = 0; i < tasks.Length; i++)
         {
             OzonCurrentTask task = tasks[i];
 
-            
+            TaskReport report = new TaskReport(task.Name);
 
-            foreach (DataResult resultTest in task.yourResult.Results)
+            foreach (DataResult yourTest in task.yourResult.Results)
             {
-                DataResult result = task.Results.First(x => x.result.Key == resultTest.result.Key);
+                DataResult result = task.Results.First(x => x.result.Key == yourTest.result.Key);
 
+                if (result.result.Value != yourTest.result.Value)
+                {
+                    UnitErrorReporting error = new UnitErrorReporting();
 
+                    error.line = result.result.Key;
+                    error.true_result = result.result.Value;
+                    error.false_result = yourTest.result.Value;
+
+                    report.AddError(error);
+                }
             }
+
+            System.Console.WriteLine(report.ToString());
         }
 
         GC.SuppressFinalize(this);

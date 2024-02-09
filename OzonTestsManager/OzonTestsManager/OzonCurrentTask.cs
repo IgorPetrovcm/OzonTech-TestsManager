@@ -46,7 +46,7 @@ public class OzonCurrentTask
 
 	public void UploadResults(string[] lines)
 	{
-		_results = new List<DataResult>( new DataResult[lines.Length] );
+		_results = new List<DataResult>();
 
 		for (int i = 0; i < lines.Length; i++)
 		{
@@ -56,7 +56,9 @@ public class OzonCurrentTask
 
 	public void UploadTests(string[] lines)
 	{
-		_tests = new List<DataTest>( new DataTest[int.Parse(lines[0])] );
+		_countTests = int.Parse(lines[0]);
+
+		_tests = new List<DataTest>();
 
 		for (int i = 1; i < lines.Length; i++)
 		{
